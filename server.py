@@ -10,8 +10,8 @@ def index():
 
 
 @app.route('/users', methods=['POST'])
-def bla():
-    return jsonify({'status': 'ok'})
+def better_name():
+    return jsonify({})
 
 if __name__ == '__main__':
     app.run()
