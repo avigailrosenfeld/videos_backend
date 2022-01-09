@@ -15,5 +15,9 @@ install docker engine:
 4) run - `sudo apt-get update`
 5) run - `sudo apt-get install docker-ce docker-ce-cli containerd.io`
 
+run conteiner:
+1) cmd + p. than type `> Remote-Containers: Open folder in container`
+2) cmd + p. than type `> select interpreter`, and select - `Use python from 'python.defaultInerpreterPath' setting`
 
-
+run appication:
+1) run flask
