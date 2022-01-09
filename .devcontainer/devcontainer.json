@@ -1,0 +1,26 @@
+// For format details, see https://aka.ms/vscode-remote/devcontainer.json or this file's README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.101.1/containers/docker-existing-dockerfile
+{
+    "name": "Videos Backend",
+    "settings": {
+        "editor.formatOnSave": true,
+        "python.languageServer": "Pylance",
+    },
+    "extensions": [
+        "ms-python.python",
+        "streetsidesoftware.code-spell-checker",
+        "ms-python.vscode-pylance",
+        "plrenaudin.gotolastedit",
+        "cameron.vscode-pytest",
+        "github.vscode-pull-request-github",
+        "littlefoxteam.vscode-python-test-adapter",
+        "visualstudioexptteam.vscodeintellicode"
+    ],
+    "build": {
+        "dockerfile": "../Dockerfile"
+    },
+    "forwardPorts": [
+        8000
+    ],
+    "postCreateCommand": "pip install pytest pylint autopep8 rope",
+}
