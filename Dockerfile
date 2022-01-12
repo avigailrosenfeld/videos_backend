@@ -1,4 +1,5 @@
 FROM ubuntu:20.04
+FROM mongo:latest
 ENV DEBIAN_FRONTEND=noninteractive
 ENV VIRTUAL_ENV=/opt/venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
@@ -25,7 +26,8 @@ apt-get autoremove -y && \
 rm -rf /var/lib/cache/* && \
 rm -rf /var/lib/log/*
 EXPOSE 5555
-EXPOSE 8000
+EXPOSE 27017
+EXPOSE 8000EXPOSE 5555
 ARG GITVER
 ENV GITVER ${GITVER}
 RUN chown -R appuser:appuser /opt/venv /appuser /home/appuser
@@ -36,4 +38,6 @@ RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/
 -p https://github.com/zsh-users/zsh-autosuggestions \
 -a 'ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=5"'
 ENV SHELL /bin/zsh
+
+RUN 
 ENTRYPOINT [ "/bin/zsh" ]
