@@ -22,3 +22,15 @@ Run conteiner:
 
 Run appication:
 1) run flask
+
+Install and run local mongoDB:
+1) install
+2) run
+3) create new db
+4) update `.env` file
+
+Install ngrok
+1) install
+2) create account
+3) run - `ngrok tcp 27017`
+4) in `.env` file update MONGO_HOST variable to be `mongodb://{ngrok_url}/{db_name}
