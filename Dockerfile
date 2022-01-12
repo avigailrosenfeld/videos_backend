@@ -13,18 +13,9 @@ RUN chown -R appuser:appuser /opt/venv /appuser /home/appuser
 COPY requirements.txt .
 RUN pip install wheel
 RUN pip --no-cache-dir install -r requirements.txt
-RUN apt-get clean && \
-apt-get autoclean && \
-apt-get autoremove -y && \
-rm -rf /var/lib/cache/* && \
-rm -rf /var/lib/log/*
-RUN apt-get update && \
-apt-get install -y zsh git nano wget --no-install-recommends
-RUN apt-get clean && \
-apt-get autoclean && \
-apt-get autoremove -y && \
-rm -rf /var/lib/cache/* && \
-rm -rf /var/lib/log/*
+RUN apt-get clean && apt-get autoclean && apt-get autoremove -y && rm -rf /var/lib/cache/* && rm -rf /var/lib/log/*
+RUN apt-get update && apt-get install -y zsh git nano wget --no-install-recommends
+RUN apt-get clean && apt-get autoclean && apt-get autoremove -y && rm -rf /var/lib/cache/* && rm -rf /var/lib/log/*
 EXPOSE 5555
 EXPOSE 27017
 EXPOSE 8000EXPOSE 5555
