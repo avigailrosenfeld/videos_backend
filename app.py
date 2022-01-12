@@ -2,8 +2,10 @@ from flask import Flask
 from config import BaseConfig
 from db import initialize_db
 from rest import initialize_api
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 
 def init():
