@@ -35,4 +35,4 @@ Install ngrok
 1) install
 2) create account
 3) run - `ngrok tcp 27017`
-4) in `.env` file update MONGO_HOST variable to be `mongodb://{ngrok_url}/{db_name}
+4) in `.env` file update `MONGO_HOST` variable to be `mongodb://{ngrok_url}/{db_name}`
