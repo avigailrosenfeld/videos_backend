@@ -4,7 +4,7 @@ Setup Dev Env
 
 Prepare IDE:
 1) clone this repo
-2) download vscode
+2) download and run vscode
 3) install remove-containers extension
 
 Install docker engine:
@@ -38,7 +38,7 @@ Install and run local mongoDB:
 
 Install ngrok
 1) run - `sudo apt update`
-2) run - `sudo apt updatsudo apt install snapd`
+2) run - `sudo apt install snapd`
 3) run - `snap install ngrok`
 4) register to ngrok and get token
 5) run - `ngrok tcp 27017`
