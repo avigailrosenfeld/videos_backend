@@ -14,6 +14,8 @@ Install docker engine:
   $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null`
 4) run - `sudo apt-get update`
 5) run - `sudo apt-get install docker-ce docker-ce-cli containerd.io`
+6) run - `sudo usermod -aG docker $USER`
+7) run - `sudo reboot`
 
 Run conteiner:
 1) open videos backend folder in vscode
