@@ -2,6 +2,9 @@
 // https://github.com/microsoft/vscode-dev-containers/tree/v0.101.1/containers/docker-existing-dockerfile
 {
     "name": "Videos Backend",
+    // "dockerComposeFile": "./docker-compose.yml",
+    // "service": "app",
+    // "workspaceFolder": "/workspace",
     "settings": {
         "editor.formatOnSave": true,
         "python.languageServer": "Pylance",
@@ -20,7 +23,8 @@
         "dockerfile": "../Dockerfile"
     },
     "forwardPorts": [
-        8000
+        8000,
+        27017
     ],
     "postCreateCommand": "pip install pytest pylint autopep8 rope",
 }

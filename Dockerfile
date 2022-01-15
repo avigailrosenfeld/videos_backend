@@ -20,11 +20,12 @@ EXPOSE 8000
 ARG GITVER
 ENV GITVER ${GITVER}
 RUN chown -R appuser:appuser /opt/venv /appuser /home/appuser
-USER appuser
-RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/v1.1.1/zsh-in-docker.sh)" -- \
--t robbyrussell \
--p git \
--p https://github.com/zsh-users/zsh-autosuggestions \
--a 'ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=5"'
-ENV SHELL /bin/zsh
-ENTRYPOINT [ "/bin/zsh" ]
+
+COPY setup_local_db.js .
+RUN apt-get -y update
+RUN apt install -y mongodb
+RUN mkdir -p /run/mongodb/
+RUN chown -R mongodb:mongodb /run/mongodb
+RUN chmod -R 777 /run/mongodb
+EXPOSE 27017
+
