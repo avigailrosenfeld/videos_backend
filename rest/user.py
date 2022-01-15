@@ -16,9 +16,10 @@ class UsersApi(Resource):
         try:
             body = request.get_json()
             password = body.get('password')
-            password = password.encode('utf-8')
-            password = bcrypt.hashpw(password, bcrypt.gensalt())
-            body['password'] = password
+            if not password:
+                return jsonify(message="No Password"), 401
+            body['password'] = bcrypt.hashpw(
+                password.encode('utf-8'), bcrypt.gensalt())
             user = User(**body).save()
             id = user.id
             return {"id": str(id)}, 201

@@ -17,7 +17,6 @@ app.config["JWT_SECRET_KEY"] = "this-is-secret-key"  # change it
 
 def init():
     app.config.from_object(BaseConfig)
-    app.register_blueprint(auth)
     initialize_db(app)
     initialize_api(app)
 

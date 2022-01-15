@@ -7,5 +7,6 @@ api = None
 
 def initialize_api(app):
     app.logger.info("Initializing REST Apis")
+    app.register_blueprint(auth)
     api = Api(app, errors=errors)
     initialize_routes(api)
