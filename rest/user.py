@@ -4,6 +4,7 @@ from db.models import User
 from flask_restful import Resource
 from mongoengine.errors import DoesNotExist, NotUniqueError, ValidationError
 from errors import InternalServerError, SchemaValidationError, UserNotFoundError, EmailAlreadyExistError
+import bcrypt
 
 
 class UsersApi(Resource):
@@ -14,6 +15,11 @@ class UsersApi(Resource):
     def post(self):
         try:
             body = request.get_json()
+            password = body.get('password')
+            if not password:
+                return jsonify(message="No Password"), 401
+            body['password'] = bcrypt.hashpw(
+                password.encode('utf-8'), bcrypt.gensalt())
             user = User(**body).save()
             id = user.id
             return {"id": str(id)}, 201

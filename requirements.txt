@@ -4,3 +4,5 @@ requests==2.24.0
 flask-restful==0.3.9
 flask-mongoengine==1.0.0
 flask-cors==3.0.10
+flask-jwt-extended==4.3.1 
+bcrypt==3.2.0 
