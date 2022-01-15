@@ -1,7 +1,15 @@
 import os
+from dotenv import load_dotenv
+from pathlib import Path
+from os.path import join, dirname
+import sys
 
 
 class BaseConfig(object):
+    env_file = sys.argv[1]
+    dotenv_path = Path(join(dirname(__file__), env_file))
+    a = load_dotenv(dotenv_path=dotenv_path)
+
     SECRET_KEY = os.environ["SECRET_KEY"]
     DEBUG = True
     MONGODB_DB = os.environ["DB_NAME"]
