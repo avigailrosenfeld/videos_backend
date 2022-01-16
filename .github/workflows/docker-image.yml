@@ -22,6 +22,6 @@ jobs:
       - name: Run Docker
         run: docker run --name test my-image-name:latest
       - name: Setup Mongo
-        run: docker exec -it test echo "Hello from container!"
+        run: docker exec -i test echo "Hello from container!"
       - name: Run Flask and Tests
         run: python app.py test.env & python .vs_code/run_nose.py /workspaces/videos_backend/tests/api_test.py -v -s
