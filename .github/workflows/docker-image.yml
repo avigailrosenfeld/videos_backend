@@ -21,9 +21,7 @@ jobs:
         run: docker build . --file Dockerfile --tag my-image-name
       - name: Run Docker
         run: docker run my-image-name:latest
-      - name: setup mongo
-        run: sudo ./setup.sh
-      - name: run flask
-        run: docker run -w /workspaces/videos_backend/ my-image-name:latest python app.py test.env
-      - name: run test
-        run: docker run -w /workspaces/videos_backend/ my-image-name:latest python .vs_code/run_nose.py /workspaces/videos_backend/tests/api_test.py -v -s
+      - name: Setup Mongo
+        run: ./setup.sh
+      - name: Run Flask and Tests
+        run: python app.py test.env & python .vs_code/run_nose.py /workspaces/videos_backend/tests/api_test.py -v -s
