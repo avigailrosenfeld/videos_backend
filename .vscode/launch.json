@@ -2,12 +2,41 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "flask",
+            "name": "Flask",
             "type": "python",
             "request": "launch",
             "module": "app",
             "args": [],
             "console": "integratedTerminal"
-        }
+        },
+        {
+            "name": "Flask Test",
+            "type": "python",
+            "request": "launch",
+            "module": "app",
+            "args": [
+                "test.env"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Nose",
+            "type": "python",
+            "request": "launch",
+            "stopOnEntry": false,
+            // "python": "${config.python.pythonPath}",
+            "program": "${workspaceRoot}/.vscode/run_nose.py",
+            "cwd": "${workspaceRoot}",
+            "debugOptions": [
+                "WaitOnAbnormalExit",
+                "WaitOnNormalExit",
+                "RedirectOutput"
+            ],
+            "args": [
+                "${workspaceRoot}/tests/", // currently selected file
+                "-v", // additional nose parameters –
+                "-s" // tweak to your liking
+            ]
+        },
     ]
 }

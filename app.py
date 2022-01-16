@@ -1,11 +1,10 @@
-from flask import Flask, jsonify, request
+from flask import Flask
 from config import BaseConfig
 from db import initialize_db
 from rest import initialize_api
 from flask_cors import CORS
-from flask_jwt_extended import JWTManager, jwt_required, create_access_token
-from flask_mongoengine import DoesNotExist
-from blueprints.auth import auth
+from flask_jwt_extended import JWTManager
+
 
 app = Flask(__name__)
 jwt = JWTManager(app)

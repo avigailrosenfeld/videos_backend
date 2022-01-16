@@ -1,4 +1,4 @@
-from flask import Response, request
+from flask import Response, request, jsonify
 from flask import current_app as app
 from db.models import User
 from flask_restful import Resource
