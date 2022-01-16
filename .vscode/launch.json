@@ -20,11 +20,10 @@
             "console": "integratedTerminal"
         },
         {
-            "name": "Nose",
+            "name": "Run API Tests",
             "type": "python",
             "request": "launch",
             "stopOnEntry": false,
-            // "python": "${config.python.pythonPath}",
             "program": "${workspaceRoot}/.vscode/run_nose.py",
             "cwd": "${workspaceRoot}",
             "debugOptions": [
@@ -33,7 +32,7 @@
                 "RedirectOutput"
             ],
             "args": [
-                "${workspaceRoot}/tests/", // currently selected file
+                "${workspaceRoot}/tests/api_test.py", // currently selected file
                 "-v", // additional nose parameters –
                 "-s" // tweak to your liking
             ]

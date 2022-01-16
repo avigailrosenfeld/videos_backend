@@ -3,10 +3,10 @@ from pymongo import MongoClient
 from decouple import Config, RepositoryEnv
 from unittest import TestCase
 from os.path import join
-import requests
+from tests.users import UsersTests
 
 
-API_URL = "http://localhost:8000"
+API_URL: str = "http://localhost:8000"
 
 
 class APITestCase(TestCase):
@@ -22,21 +22,10 @@ class APITestCase(TestCase):
         for collection in db.list_collection_names():
             db[collection].drop()
 
-        self._access_token = None
+    def api_test(self) -> None:
+        APITestCase.users()
 
-    def api_test(self):
-        self.create_user()
-        self.login()
-
-    def create_user(self):
-        user_data = {"name": "aa", "password": "1234", "email": "bb@a.a"}
-        response = requests.post(f'{API_URL}/users', json=user_data)
-        self.assertEqual(response.status_code, 201)
-
-    def login(self):
-        user_data = {"password": "1234", "email": "bb@a.a"}
-        response = requests.post(f'{API_URL}/login', json=user_data)
-        self.assertEqual(response.status_code, 201)
-        self.assertEqual(response.json().get('message'), 'Login Succeeded!')
-        self._access_token = response.json().get('access_token')
-        self.assertIsNotNone(self._access_token)
+    @staticmethod
+    def users() -> None:
+        users_test = UsersTests(API_URL)
+        users_test.run_tests()

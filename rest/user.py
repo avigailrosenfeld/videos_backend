@@ -40,10 +40,13 @@ class UserApi(Resource):
 
     def get(self, id):
         try:
-            users = User.objects.get(id=id).to_json()
+            users = User.objects.get(id=id)
+            users = users.to_json()
             return Response(users, mimetype="application/json", status=200)
         except DoesNotExist:
             raise UserNotFoundError
+        except ValidationError:
+            raise SchemaValidationError
 
     def delete(self, id):
         user = User.objects.get(id=id).delete()
