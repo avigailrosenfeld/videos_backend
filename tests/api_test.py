@@ -1,4 +1,3 @@
-
 from pymongo import MongoClient
 from decouple import Config, RepositoryEnv
 from unittest import TestCase
