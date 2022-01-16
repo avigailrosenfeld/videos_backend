@@ -20,8 +20,8 @@ jobs:
       - name: Build the Docker image
         run: docker build . --file Dockerfile --tag my-image-name
       - name: Run Docker
-        run: docker run my-image-name:latest
+        run: docker run --name test my-image-name:latest
       - name: Setup Mongo
-        run: docker exec -it my-image-name:latest echo "Hello from container!"
+        run: docker exec -it test echo "Hello from container!"
       - name: Run Flask and Tests
         run: python app.py test.env & python .vs_code/run_nose.py /workspaces/videos_backend/tests/api_test.py -v -s
