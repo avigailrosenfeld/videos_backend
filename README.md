@@ -21,7 +21,7 @@ Install docker engine:
 Run conteiner:
 1) open videos backend folder in vscode
 2) cmd + p. than type `> Remote-Containers: Open folder in container`
-3) inside the container terminal run - `service mongodb start && mongo < setup_local_db.js`
+3) inside the container terminal run - `service mongodb start` and then `mongo < setup_local_db.js`
 4) create .env file with all configurations
 
 Run appication:
