@@ -27,5 +27,7 @@ RUN apt install -y mongodb
 RUN mkdir -p /run/mongodb/
 RUN chown -R mongodb:mongodb /run/mongodb
 RUN chmod -R 777 /run/mongodb
+RUN chmod -R 771 ./setup.sh
+RUN chmod -R 771 ./setup_local_db.js
 EXPOSE 27017
 
