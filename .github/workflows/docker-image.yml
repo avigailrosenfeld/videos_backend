@@ -20,8 +20,8 @@ jobs:
       - name: Build the Docker image
         run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
       - name: setup mongo
-      - run: ./setup.sh
+        run: ./setup.sh
       - name: run flask
-      - run: python -m app test.env
+        run: python -m app test.env
       - name: run test
-      - run: python .vs_code/run_nose.py /workspaces/videos_backend/tests/api_test.py -v -s
+        run: python .vs_code/run_nose.py /workspaces/videos_backend/tests/api_test.py -v -s
