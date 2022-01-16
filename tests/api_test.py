@@ -11,6 +11,11 @@ API_URL: str = "http://localhost:8000"
 
 class APITestCase(TestCase):
     def setUp(self):
+        APITestCase._prepare_db()
+        self._users_tests = UsersTests(API_URL)
+
+    @staticmethod
+    def _prepare_db() -> None:
         env_path = join('/workspaces/videos_backend', 'test.env')
         env_config = Config(RepositoryEnv(env_path)).repository.data
 
@@ -23,9 +28,4 @@ class APITestCase(TestCase):
             db[collection].drop()
 
     def api_test(self) -> None:
-        APITestCase.users()
-
-    @staticmethod
-    def users() -> None:
-        users_test = UsersTests(API_URL)
-        users_test.run_tests()
+        self._users_tests.run_tests()
