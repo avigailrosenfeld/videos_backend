@@ -1,0 +1,29 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches:    
+      - '*'         # matches every branch that doesn't contain a '/'
+      - '*/*'       # matches every branch containing a single '/'
+      - '**'        # matches every branch
+  pull_request:
+    branches: 
+      - '*'         # matches every branch that doesn't contain a '/'
+      - '*/*'       # matches every branch containing a single '/'
+      - '**'        # matches every branch
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build the Docker image
+        run: docker build . --file Dockerfile --tag my-image-name
+      - name: Run Docker
+        run: docker run my-image-name:latest
+      - name: setup mongo
+        run: sudo ./setup.sh
+      - name: run flask
+        run: docker run -w /workspaces/videos_backend/ my-image-name:latest python app.py test.env
+      - name: run test
+        run: docker run -w /workspaces/videos_backend/ my-image-name:latest python .vs_code/run_nose.py /workspaces/videos_backend/tests/api_test.py -v -s
