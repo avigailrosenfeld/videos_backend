@@ -26,5 +26,5 @@
         8000,
         27017
     ],
-    "postCreateCommand": "pip install pytest pylint autopep8 rope",
+    "postCreateCommand": "bash setup.sh"
 }
