@@ -18,9 +18,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+        run: docker build . --file Dockerfile --tag my-image-name
       - name: setup mongo
-        run: docker run -w /workspaces/videos_backend/ -i -t ubuntu pwd
+        run: docker run -w /workspaces/videos_backend/ -it my-image-name pwd
       - name: run flask
         run: python -m app test.env
       - name: run test
