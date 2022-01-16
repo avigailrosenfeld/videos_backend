@@ -22,7 +22,7 @@ jobs:
       - name: Run Docker
         run: docker run my-image-name:latest
       - name: setup mongo
-        run: ./setup.sh
+        run: sudo ./setup.sh
       - name: run flask
         run: docker run -w /workspaces/videos_backend/ my-image-name:latest python app.py test.env
       - name: run test
