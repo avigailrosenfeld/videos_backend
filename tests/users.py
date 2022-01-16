@@ -4,8 +4,8 @@ import requests
 class UsersTests():
     def __init__(self, api_url: str) -> None:
         self._api_url = api_url
-        self.access_token = None
-        self.user_id = None
+        self._access_token = None
+        self._user_id = None
 
     def run_tests(self) -> None:
         self._create_user()
