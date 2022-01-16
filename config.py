@@ -1,19 +1,20 @@
 import os
-from dotenv import load_dotenv
-from pathlib import Path
 from os.path import join, dirname
+from decouple import Config, RepositoryEnv
 import sys
 
 
 class BaseConfig(object):
-    env_file = sys.argv[1]
-    dotenv_path = Path(join(dirname(__file__), env_file))
-    a = load_dotenv(dotenv_path=dotenv_path)
+    env_config = os.environ
+    if len(sys.argv) > 1:
+        env_file = sys.argv[1]
+        env_path = join(dirname(__file__), env_file)
+        env_config = Config(RepositoryEnv(env_path)).repository.data
 
-    SECRET_KEY = os.environ["SECRET_KEY"]
+    SECRET_KEY = env_config["SECRET_KEY"]
     DEBUG = True
-    MONGODB_DB = os.environ["DB_NAME"]
-    MONGODB_HOST = os.environ["DB_HOST"]
-    MONGODB_PORT = int(os.environ["DB_PORT"])
-    MONGODB_USERNAME = os.environ["DB_USER"]
-    MONGODB_PASSWORD = os.environ["DB_PASS"]
+    MONGODB_DB = env_config["DB_NAME"]
+    MONGODB_HOST = env_config["DB_HOST"]
+    MONGODB_PORT = int(env_config["DB_PORT"])
+    MONGODB_USERNAME = env_config["DB_USER"]
+    MONGODB_PASSWORD = env_config["DB_PASS"]

@@ -6,8 +6,16 @@
             "type": "python",
             "request": "launch",
             "module": "app",
+            "args": [],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Flask Test",
+            "type": "python",
+            "request": "launch",
+            "module": "app",
             "args": [
-                ".env"
+                "test.env"
             ],
             "console": "integratedTerminal"
         },
@@ -25,7 +33,7 @@
                 "RedirectOutput"
             ],
             "args": [
-                "${workspaceRoot}/tests/api_test.py", // currently selected file
+                "${workspaceRoot}/tests/", // currently selected file
                 "-v", // additional nose parameters –
                 "-s" // tweak to your liking
             ]
