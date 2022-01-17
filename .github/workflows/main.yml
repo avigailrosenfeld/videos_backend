@@ -23,12 +23,17 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: '3.7'
-    - name: PWD
-      run: pwd
+    - name: Install mongo
+      run: |
+         apt-get -y update
+         apt install -y mongodb
+         mkdir -p /run/mongodb/
+         chown -R mongodb:mongodb /run/mongodb
+         chmod -R 777 /run/mongodb
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-    - name: Run flask
+    - name: Run tests
       run: |
         python app.py test.env & python tests/run_tests.py
