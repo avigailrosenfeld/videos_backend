@@ -27,8 +27,8 @@ jobs:
       uses: supercharge/mongodb-github-action@1.7.0
       with:
         mongodb-version: '4.4'
-    - name: aa
-      run: service mongodb status
+    - name: Create mongo databases
+      run: mongo < setup_local_db.js
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
