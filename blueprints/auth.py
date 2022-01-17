@@ -8,7 +8,7 @@ auth = Blueprint('auth', __name__)
 
 
 @auth.route('/login', methods=['POST'])
-def login() -> None:
+def login():
     if not request.json:
         return jsonify(message="No Data"), 401
     email = request.json.get("email")
