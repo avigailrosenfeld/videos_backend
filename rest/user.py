@@ -1,4 +1,5 @@
-from flask import Response, request, jsonify
+from flask import request, jsonify
+from flask.wrappers import Response
 from flask import current_app as app
 from db.models import User
 from flask_restful import Resource
@@ -15,6 +16,8 @@ class UsersApi(Resource):
     def post(self):
         try:
             body = request.get_json()
+            if not body:
+                raise SchemaValidationError
             password = body.get('password')
             if not password:
                 return jsonify(message="No Password"), 401

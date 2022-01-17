@@ -9,8 +9,10 @@ auth = Blueprint('auth', __name__)
 
 @auth.route('/login', methods=['POST'])
 def login():
-    email = request.json["email"]
-    password = request.json["password"]
+    if not request.json:
+        return jsonify(message="No Data"), 401
+    email = request.json.get("email")
+    password = request.json.get("password")
     try:
         user = User.objects.get(email=email)
         if not bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
