@@ -1,4 +1,3 @@
-# errors.py
 from werkzeug.exceptions import HTTPException
 
 
