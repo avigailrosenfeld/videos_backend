@@ -2,7 +2,7 @@ from pymongo import MongoClient
 from decouple import Config, RepositoryEnv
 from unittest import TestCase
 from os.path import join, dirname
-from tests.users import UsersTests
+from users import UsersTests
 
 
 API_URL: str = "http://localhost:8000"
@@ -26,5 +26,5 @@ class APITestCase(TestCase):
         for collection in db.list_collection_names():
             db[collection].drop()
 
-    def api_test(self) -> None:
+    def runTest(self) -> None:
         self._users_tests.run_tests()

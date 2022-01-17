@@ -26,18 +26,14 @@
             "type": "python",
             "request": "launch",
             "stopOnEntry": false,
-            "program": "${workspaceRoot}/.vscode/run_nose.py",
+            "program": "${workspaceRoot}/tests/run_tests.py",
             "cwd": "${workspaceRoot}",
             "debugOptions": [
                 "WaitOnAbnormalExit",
                 "WaitOnNormalExit",
                 "RedirectOutput"
             ],
-            "args": [
-                "${workspaceRoot}/tests/api_test.py", // currently selected file
-                "-v", // additional nose parameters –
-                "-s" // tweak to your liking
-            ]
+            "args": []
         },
     ]
 }
