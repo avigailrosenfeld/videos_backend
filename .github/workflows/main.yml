@@ -26,7 +26,7 @@ jobs:
     - name: Start MongoDB
       uses: supercharge/mongodb-github-action@1.7.0
       with:
-        mongodb-version: ${{ matrix.mongodb-version }}
+        mongodb-version: '4.4'
     - name: aa
       run: service mongodb status
     - name: Install dependencies
