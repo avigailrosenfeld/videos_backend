@@ -18,3 +18,6 @@ Run Appication:
 Run API Tests:
 1) run flask test
 2) run API tests
+
+Run Pyright:
+1) run - `pyright`
