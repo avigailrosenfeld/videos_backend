@@ -30,7 +30,5 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     - name: Run flask
-      run:
-        python app.py test.env
-    - name: aa
-      run: python .vscode/run_nose.py /home/runner/work/videos_backend/videos_backend/tests/api_test.py -v -s
+      run: |
+        python app.py test.env & python .vscode/run_nose.py /home/runner/work/videos_backend/videos_backend/tests/api_test.py -v -s
