@@ -1,7 +1,7 @@
 from pymongo import MongoClient
 from decouple import Config, RepositoryEnv
 from unittest import TestCase
-from os.path import join
+from os.path import join, dirname
 from tests.users import UsersTests
 
 
@@ -15,7 +15,7 @@ class APITestCase(TestCase):
 
     @staticmethod
     def _prepare_db() -> None:
-        env_path = join('/workspaces/videos_backend', 'test.env')
+        env_path = join(dirname(__file__) + '/..', 'test.env')
         env_config = Config(RepositoryEnv(env_path)).repository.data
 
         if '127.0.0.1' not in env_config["DB_HOST"] or 'tests' not in env_config["DB_HOST"]:
