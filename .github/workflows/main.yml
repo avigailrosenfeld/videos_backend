@@ -31,4 +31,4 @@ jobs:
         pip install -r requirements.txt
     - name: Run flask
       run: |
-        python app.py test.env && sleep 3 & python .vscode/run_nose.py /home/runner/work/videos_backend/videos_backend/tests/api_test.py -v -s
+        python app.py test.env & python tests/run_tests.py
