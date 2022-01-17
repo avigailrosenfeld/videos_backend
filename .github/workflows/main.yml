@@ -35,5 +35,6 @@ jobs:
         pip install -r requirements.txt
     - name: Run tests
       run: |
-        python app.py test.env & 
+        python app.py test.env &
+        sleep 5
         python tests/run_tests.py
