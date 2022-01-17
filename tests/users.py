@@ -17,7 +17,7 @@ class UsersTests():
         user_data = {"name": "achia", "password": "1234",
                      "email": "achia@test.com"}
         response = requests.post(f'{self._api_url}/users', json=user_data)
-        assert response.status_code == 201, 'cant create user'
+        assert response.status_code != 201, 'cant create user'
         self._user_id = response.json().get('id')
 
     def _get_existing_user(self) -> None:
