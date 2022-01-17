@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from flask_jwt_extended import JWTManager, jwt_required, create_access_token
+from flask_jwt_extended import create_access_token
 from flask_mongoengine import DoesNotExist
 from db.models import User
 import bcrypt
