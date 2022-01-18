@@ -1,14 +1,12 @@
-from datetime import datetime, timedelta, timezone
 from flask import Blueprint, jsonify, request
-from flask_jwt_extended import create_access_token, get_jwt_identity, \
-    set_access_cookies, unset_jwt_cookies, get_jwt
+from flask_jwt_extended import create_access_token, get_jwt, jwt_required
 from mongoengine.errors import DoesNotExist, NotUniqueError, ValidationError
 from errors import InternalServerError, SchemaValidationError, EmailAlreadyExistError
 from flask_mongoengine import DoesNotExist
-from flask import current_app as app
 from db.models import User
+from constants import ACCESS_EXPIRES
+from app import jwt_redis_blocklist
 import bcrypt
-
 
 auth = Blueprint('auth', __name__)
 
@@ -31,7 +29,6 @@ def register():
     except ValidationError:
         raise SchemaValidationError
     except Exception as e:
-        app.logger.error(e)
         raise InternalServerError
 
 
@@ -46,32 +43,19 @@ def login():
         if not bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
             return jsonify(message="Bad Email or Password"), 401
         access_token = create_access_token(identity=email)
-        response = jsonify(message="login successful")
-        set_access_cookies(response, access_token)
+        response = jsonify(message="login successful",
+                           access_token=access_token)
         return response, 201
     except DoesNotExist:
         return jsonify(message="Bad Email or Password"), 401
-    except Exception:
+    except Exception as e:
         return jsonify(message="WTF"), 401
 
 
 @auth.route('/logout', methods=['POST'])
+@jwt_required()
 def logout():
+    jti = get_jwt()["jti"]
+    jwt_redis_blocklist.set(jti, "", ex=ACCESS_EXPIRES)
     response = jsonify({"msg": "logout successful"})
-    unset_jwt_cookies(response)
     return response, 200
-
-
-# @app.after_request
-# def refresh_expiring_jwts(response):
-#     try:
-#         exp_timestamp = get_jwt()["exp"]
-#         now = datetime.now(timezone.utc)
-#         target_timestamp = datetime.timestamp(now + timedelta(minutes=30))
-#         if target_timestamp > exp_timestamp:
-#             access_token = create_access_token(identity=get_jwt_identity())
-#             set_access_cookies(response, access_token)
-#         return response
-#     except (RuntimeError, KeyError):
-#         # Case where there is not a valid JWT. Just return the original respone
-#         return response
