@@ -26,7 +26,7 @@ class UsersTests():
     def _create_user(self) -> None:
         user_data = {"name": "avigail", "password": "1234",
                      "email": "avigail@test.com"}
-        headers = {"Authorization": "Bearer " + self._access_token}
+        headers = {"Authorization": f'Bearer {self._access_token}'}
         response = requests.post(f'{self._api_url}/users', json=user_data)
         assert response.status_code == 401, 'create user without token'
         response = requests.post(
@@ -35,7 +35,7 @@ class UsersTests():
         self._user_id = response.json().get('id')
 
     def _get_existing_user(self) -> None:
-        headers = {"Authorization": "Bearer " + self._access_token}
+        headers = {"Authorization": f'Bearer {self._access_token}'}
         response = requests.get(f'{self._api_url}/users/{self._user_id}')
         assert response.status_code == 401, 'get user without token'
         response = requests.get(
@@ -46,7 +46,7 @@ class UsersTests():
         assert response.json().get('password') != '1234', 'get user password not encrypted'
 
     def _get_not_existing_user(self) -> None:
-        headers = {"Authorization": "Bearer " + self._access_token}
+        headers = {"Authorization": f'Bearer {self._access_token}'}
         response = requests.get(
             f'{self._api_url}/users/61e4107dab0894a2861fed80', headers=headers)
         assert response.status_code == 400, 'get not existing user return not 400'
@@ -66,7 +66,7 @@ class UsersTests():
         assert self._access_token is not None, 'login access token is None'
 
     def _logout(self) -> None:
-        headers = {"Authorization": "Bearer " + self._access_token}
+        headers = {"Authorization": f'Bearer {self._access_token}'}
         response = requests.post(f'{self._api_url}/logout')
         assert response.status_code == 401, 'cant logout without token'
         response = requests.post(f'{self._api_url}/logout', headers=headers)
@@ -75,7 +75,7 @@ class UsersTests():
     def _create_user_after_logout(self) -> None:
         user_data = {"name": "chaim", "password": "1234",
                      "email": "chaim@test.com"}
-        headers = {"Authorization": "Bearer " + self._access_token}
+        headers = {"Authorization": f'Bearer {self._access_token}'}
         response = requests.post(
             f'{self._api_url}/users', json=user_data, headers=headers)
         assert response.status_code == 401, 'create user after logout'
