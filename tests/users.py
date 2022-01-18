@@ -1,4 +1,3 @@
-from wsgiref import headers
 import requests
 
 
