@@ -5,12 +5,23 @@ from db.models import User
 from flask_restful import Resource
 from mongoengine.errors import DoesNotExist, NotUniqueError, ValidationError
 from errors import InternalServerError, SchemaValidationError, UserNotFoundError, EmailAlreadyExistError
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import get_jwt_identity, verify_jwt_in_request
 import bcrypt
 
 
+def is_admin(func):
+    def inner1(*args, **kwargs):
+        verify_jwt_in_request()
+        user = User.objects.get(email=get_jwt_identity())
+        if not user.is_admin:
+            return {'msg': 'only for admins'}, 401
+        returned_value = func(*args, **kwargs)
+        return returned_value
+    return inner1
+
+
 class UsersApi(Resource):
-    decorators = [jwt_required()]
+    decorators = [is_admin]
 
     def get(self):
         users = User.objects().to_json()
@@ -39,7 +50,7 @@ class UsersApi(Resource):
 
 
 class UserApi(Resource):
-    decorators = [jwt_required()]
+    decorators = [is_admin]
 
     def put(self, id):
         body = request.get_json()
