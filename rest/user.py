@@ -9,8 +9,19 @@ from flask_jwt_extended import jwt_required
 import bcrypt
 
 
+def is_admin(func):
+    def inner1(*args, **kwargs):
+        user = User.objects.get(email=get_jwt_identity())
+        if not user.is_admin:
+            return None
+        returned_value = func(*args, **kwargs)
+        return returned_value
+
+    return inner1
+
+
 class UsersApi(Resource):
-    decorators = [jwt_required()]
+    decorators = [jwt_required(), is_admin()]
 
     def get(self):
         users = User.objects().to_json()
