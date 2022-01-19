@@ -5,10 +5,13 @@ from db.models import User
 from flask_restful import Resource
 from mongoengine.errors import DoesNotExist, NotUniqueError, ValidationError
 from errors import InternalServerError, SchemaValidationError, UserNotFoundError, EmailAlreadyExistError
+from flask_jwt_extended import jwt_required
 import bcrypt
 
 
 class UsersApi(Resource):
+    decorators = [jwt_required()]
+
     def get(self):
         users = User.objects().to_json()
         return Response(users, mimetype="application/json", status=200)
@@ -36,6 +39,8 @@ class UsersApi(Resource):
 
 
 class UserApi(Resource):
+    decorators = [jwt_required()]
+
     def put(self, id):
         body = request.get_json()
         User.objects.get(id=id).update(**body)

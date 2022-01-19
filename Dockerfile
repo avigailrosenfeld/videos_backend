@@ -21,6 +21,9 @@ ARG GITVER
 ENV GITVER ${GITVER}
 RUN chown -R appuser:appuser /opt/venv /appuser /home/appuser
 
+RUN apt-get -y update
+RUN apt-get install -y redis-server
+
 COPY setup.sh .
 COPY setup_local_db.js .
 RUN apt-get -y update

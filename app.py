@@ -1,21 +1,35 @@
 from flask import Flask
 from config import BaseConfig
-from db import initialize_db
-from rest import initialize_api
 from flask_cors import CORS
+from constants import ACCESS_EXPIRES
 from flask_jwt_extended import JWTManager
-
+import redis
 
 app = Flask(__name__)
-jwt = JWTManager(app)
+app.config["JWT_SECRET_KEY"] = "super-secret"  # Change this in your code!
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = ACCESS_EXPIRES
+app.config['JWT_BLACKLIST_ENABLED'] = True
+app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access', 'refresh']
+app.config.from_object(BaseConfig)
 CORS(app)
+jwt = JWTManager(app)
 
-# JWT Config
-app.config["JWT_SECRET_KEY"] = "this-is-secret-key"  # change it
+
+jwt_redis_blocklist = redis.StrictRedis(
+    host="localhost", port=6379, db=0, decode_responses=True
+)
+
+
+@jwt.token_in_blocklist_loader
+def check_if_token_is_revoked(jwt_header, jwt_payload):
+    jti = jwt_payload["jti"]
+    token_in_redis = jwt_redis_blocklist.get(jti)
+    return token_in_redis is not None
 
 
 def init():
-    app.config.from_object(BaseConfig)
+    from rest import initialize_api
+    from db import initialize_db
     initialize_db(app)
     initialize_api(app)
 
