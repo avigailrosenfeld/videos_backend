@@ -1,5 +1,5 @@
 from flask import Flask
-from config import BaseConfig
+from config import BaseConfig, RedisConfig
 from flask_cors import CORS
 from constants import ACCESS_EXPIRES
 from flask_jwt_extended import JWTManager
@@ -14,9 +14,10 @@ app.config.from_object(BaseConfig)
 CORS(app)
 jwt = JWTManager(app)
 
+redis_config = RedisConfig()
 
 jwt_redis_blocklist = redis.StrictRedis(
-    host="localhost", port=6379, db=0, decode_responses=True
+    host=redis_config.REDIS_HOST, port=redis_config.REDIS_PORT, db=0, decode_responses=True
 )
 
 
