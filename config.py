@@ -5,7 +5,7 @@ import sys
 from typing import Dict, Any
 
 
-def get_env_object() -> Dict[str, Any]:
+def get_env_object():
     env_config = os.environ
     if len(sys.argv) > 1:
         env_file = sys.argv[1]
@@ -14,9 +14,10 @@ def get_env_object() -> Dict[str, Any]:
     return env_config
 
 
-class BaseConfig(object):
-    env_config = get_env_object()
+env_config = get_env_object()
 
+
+class BaseConfig(object):
     SECRET_KEY = env_config["SECRET_KEY"]
     DEBUG = True
     MONGODB_DB = env_config["DB_NAME"]
@@ -27,7 +28,5 @@ class BaseConfig(object):
 
 
 class RedisConfig(object):
-    env_config = get_env_object()
-
     REDIS_HOST = env_config["REDIS_HOST"]
     REDIS_PORT = int(env_config["REDIS_PORT"])
