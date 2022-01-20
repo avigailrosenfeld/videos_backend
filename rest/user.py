@@ -9,7 +9,7 @@ from flask_jwt_extended import get_jwt_identity, verify_jwt_in_request
 import bcrypt
 
 
-def is_admin(func):
+def jwt_admin_required(func):
     def inner1(*args, **kwargs):
         verify_jwt_in_request()
         user = User.objects.get(email=get_jwt_identity())
@@ -21,7 +21,7 @@ def is_admin(func):
 
 
 class UsersApi(Resource):
-    decorators = [is_admin]
+    decorators = [jwt_admin_required]
 
     def get(self):
         users = User.objects().to_json()
@@ -50,7 +50,7 @@ class UsersApi(Resource):
 
 
 class UserApi(Resource):
-    decorators = [is_admin]
+    decorators = [jwt_admin_required]
 
     def put(self, id):
         body = request.get_json()
