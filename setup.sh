@@ -8,3 +8,4 @@ redis-server --daemonize yes
 service mongodb start
 sleep 3
 mongo < setup_local_db.js
+sleep 1
