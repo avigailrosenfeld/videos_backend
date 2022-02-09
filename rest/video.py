@@ -39,6 +39,9 @@ class VideosApi(Resource):
             raise InternalServerError
 
 
+<< << << < HEAD
+
+
 class VideoApi(Resource):
     decorators = [jwt_admin_required]
 
@@ -60,3 +63,7 @@ class VideoApi(Resource):
     def delete(self, id):
         video = Video.objects.get(id=id).delete()
         return "", 200
+
+
+== == == =
+>>>>>> > master
