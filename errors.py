@@ -14,6 +14,10 @@ class UserNotFoundError(HTTPException):
     pass
 
 
+class VideoNotFoundError(HTTPException):
+    pass
+
+
 class EmailAlreadyExistError(HTTPException):
     pass
 
