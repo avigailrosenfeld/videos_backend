@@ -1,13 +1,13 @@
-from flask import request, jsonify
+from flask import request, request
 from flask.wrappers import Response
 from flask import current_app as app
-from pyparsing import null_debug_action
 from db.models import Video
 from flask_restful import Resource
 from mongoengine.errors import DoesNotExist, NotUniqueError, ValidationError
 from errors import InternalServerError, SchemaValidationError, VideoNotFoundError, EmailAlreadyExistError
 from rest.jwt import jwt_admin_required
-import bcrypt
+from config import FileConfig
+import os
 
 
 class VideosApi(Resource):
@@ -19,17 +19,17 @@ class VideosApi(Resource):
 
     def post(self):
         try:
-            body = request.get_json()
+            body = request.files['videofile']
             if not body:
                 raise SchemaValidationError
-            # password = body.get('password')
-            # if not password:
-            #     return jsonify(message="No Password"), 401
-            # body['password'] = bcrypt.hashpw(
-            #     password.encode('utf-8'), bcrypt.gensalt())
-            video = Video(**body).save()
-            id = video.id
-            return {"id": str(id)}, 201
+            uploads_dir = os.path.join(FileConfig.PATH_VIDEOS)
+            # os.makedirs(uploads_dir, exists_ok=True)
+            body.save(os.path.join(uploads_dir, body.filename))
+            # save each "charts" file
+            for file in request.files.getlist('charts'):
+                file.save(os.path.join(
+                    uploads_dir, file.name))
+            return {"id": str(123)}, 201
         except NotUniqueError:
             raise EmailAlreadyExistError
         except ValidationError:

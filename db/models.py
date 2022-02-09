@@ -14,6 +14,7 @@ class User(db.Document):
 
 class Video(db.Document):
     filename = db.StringField(required=True, default='admin')
+    videofile = db.StringField(required=True, default='admin')
     length = db.StringField(required=True, default='admin')
     width = db.StringField(required=True, default='admin')
     height = db.StringField(required=True, default='admin')
