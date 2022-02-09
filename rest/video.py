@@ -24,11 +24,10 @@ class VideosApi(Resource):
                 raise SchemaValidationError
             uploads_dir = os.path.join(FileConfig.PATH_VIDEOS)
             # os.makedirs(uploads_dir, exists_ok=True)
-            body.save(os.path.join(uploads_dir, body.filename))
+            body.save(os.path.join(uploads_dir, str(body.filename)))
             # save each "charts" file
             for file in request.files.getlist('charts'):
-                file.save(os.path.join(
-                    uploads_dir, file.name))
+                file.save(os.path.join(uploads_dir, str(file.name)))
             return {"id": str(123)}, 201
         except NotUniqueError:
             raise EmailAlreadyExistError
