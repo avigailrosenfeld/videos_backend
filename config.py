@@ -27,6 +27,10 @@ class BaseConfig(object):
     MONGODB_PASSWORD = env_config["DB_PASS"]
 
 
+class FileConfig(object):
+    PATH_VIDEOS = env_config["PATH_VIDEOS"]
+
+
 class RedisConfig(object):
     REDIS_HOST = env_config["REDIS_HOST"]
     REDIS_PORT = int(env_config["REDIS_PORT"])
