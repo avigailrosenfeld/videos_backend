@@ -22,7 +22,6 @@ class VideosApi(Resource):
         try:
             files = request.files
             a = 0
-
             # print("File uploaded")
             # print(file)
 
