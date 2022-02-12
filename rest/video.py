@@ -24,7 +24,6 @@ class VideosApi(Resource):
             a = 0
             # print("File uploaded")
             # print(file)
-
             # res = make_response(jsonify({"message": "File uploaded"}), 200)
 
             # return res
