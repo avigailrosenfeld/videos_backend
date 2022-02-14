@@ -11,3 +11,4 @@ python-dotenv==0.19.2
 python-decouple==3.5
 pyright==0.0.13
 redis==4.1.1
+mypy==0.931
