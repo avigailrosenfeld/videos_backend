@@ -21,3 +21,6 @@ Run API Tests:
 
 Run Pyright:
 1) run - `pyright`
+
+Run Mypy:
+1) run - `mypy`
