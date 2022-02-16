@@ -14,6 +14,10 @@ Run Conteiner:
 
 Run Appication:
 1) run flask
+2) run celery worker
+
+Monitor Celery Workers:
+1) run celery flower
 
 Run API Tests:
 1) run flask test
