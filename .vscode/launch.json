@@ -12,6 +12,34 @@
             "console": "integratedTerminal"
         },
         {
+            "name": "Celery Worker",
+            "type": "python",
+            "request": "launch",
+            "module": "celery",
+            "console": "integratedTerminal",
+            "args": [
+                "-A",
+                "async_tasks.tasks",
+                "worker",
+                "-l",
+                "info"
+            ]
+        },
+        {
+            "name": "Celery Flower",
+            "type": "python",
+            "request": "launch",
+            "module": "celery",
+            "console": "integratedTerminal",
+            "args": [
+                "-A",
+                "async_tasks.tasks",
+                "flower",
+                "-l",
+                "info"
+            ]
+        },
+        {
             "name": "Flask Test",
             "type": "python",
             "request": "launch",

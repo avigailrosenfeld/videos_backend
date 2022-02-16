@@ -34,3 +34,4 @@ RUN chmod -R 777 /run/mongodb
 RUN chmod 777 ./setup.sh
 RUN chmod 777 ./setup_local_db.js
 EXPOSE 27017
+EXPOSE 6379

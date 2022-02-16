@@ -24,7 +24,9 @@
     },
     "forwardPorts": [
         8000,
-        27017
+        27017,
+        6379,
+        5555
     ],
     "postCreateCommand": "bash setup.sh"
 }
