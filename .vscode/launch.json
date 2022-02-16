@@ -22,7 +22,9 @@
                 "async_tasks.tasks",
                 "worker",
                 "-l",
-                "info"
+                "info",
+                "--concurrency",
+                "2"
             ]
         },
         {
