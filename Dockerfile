@@ -23,6 +23,7 @@ RUN chown -R appuser:appuser /opt/venv /appuser /home/appuser
 
 RUN apt-get -y update
 RUN apt-get install -y redis-server
+RUN apt-get install -y ffmpeg
 
 COPY setup.sh .
 COPY setup_local_db.js .
@@ -34,3 +35,4 @@ RUN chmod -R 777 /run/mongodb
 RUN chmod 777 ./setup.sh
 RUN chmod 777 ./setup_local_db.js
 EXPOSE 27017
+EXPOSE 6379

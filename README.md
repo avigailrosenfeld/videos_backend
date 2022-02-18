@@ -14,6 +14,11 @@ Run Conteiner:
 
 Run Appication:
 1) run flask
+2) run celery worker
+
+Monitor Celery Workers:
+1) run celery flower
+2) open `http://localhost:5555` in your browser 
 
 Run API Tests:
 1) run flask test
