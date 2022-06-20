@@ -33,3 +33,5 @@ RUN chmod 777 ./setup.sh
 EXPOSE 3306
 EXPOSE 6379
 RUN git config --global --add safe.directory /workspaces/videos_backend
+RUN git config --global user.email "you@example.com"
+RUN git config --global user.name "Your Name"
