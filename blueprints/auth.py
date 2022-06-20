@@ -1,11 +1,11 @@
 from flask import Blueprint, jsonify, request
-#from flask_jwt_extended import create_access_token, get_jwt, jwt_required
-from mongoengine.errors import DoesNotExist, NotUniqueError, ValidationError
+from flask_jwt_extended import create_access_token, get_jwt, jwt_required
+#from mongoengine.errors import DoesNotExist, NotUniqueError, ValidationError
 from errors import InternalServerError, SchemaValidationError, EmailAlreadyExistError
 #from flask_mongoengine import DoesNotExist
 from db.models import User
 from constants import ACCESS_EXPIRES
-from app import jwt_redis_blocklist
+from app import jwt_redis_blocklist, db
 import bcrypt
 
 auth = Blueprint('auth', __name__)
@@ -22,13 +22,15 @@ def register():
             return jsonify(message="No Password"), 401
         body['password'] = bcrypt.hashpw(
             password.encode('utf-8'), bcrypt.gensalt())
-        user = User(**body).save()
+        db.session.add(User(**body))
+        db.session.commit()
         return {}, 201
-    except NotUniqueError:
-        raise EmailAlreadyExistError
-    except ValidationError:
-        raise SchemaValidationError
     except Exception as e:
+        # TODO
+        if False:
+            raise EmailAlreadyExistError
+        if False:
+            raise SchemaValidationError
         raise InternalServerError
 
 
@@ -39,16 +41,19 @@ def login():
     email = request.json.get("email")
     password = request.json.get("password")
     try:
-        user = User.objects.get(email=email)
+        user = db.session.query(User).filter(User.email == email).first()
+        if not user:
+            return jsonify(message="User not exist"), 401
         if not bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
             return jsonify(message="Bad Email or Password"), 401
         access_token = create_access_token(identity=email)
         response = jsonify(message="login successful",
                            access_token=access_token)
         return response, 201
-    except DoesNotExist:
-        return jsonify(message="Bad Email or Password"), 401
     except Exception as e:
+        # TODO
+        if False:
+            return jsonify(message="Bad Email or Password"), 401
         return jsonify(message="WTF"), 401
 
 

@@ -18,7 +18,7 @@ class APITestCase(TestCase):
         env_path = join(dirname(__file__) + '/..', 'test.env')
         env_config = Config(RepositoryEnv(env_path)).repository.data
 
-        if '127.0.0.1' not in env_config["DB_HOST"] or 'tests' not in env_config["DB_HOST"]:
+        if 'test' not in env_config["DB_NAME"] or 'localhost' not in env_config["DB_HOST"]:
             raise Exception("not local db")
 
         # mongo_client = MongoClient(env_config["DB_HOST"])
