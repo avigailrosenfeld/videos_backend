@@ -1,8 +1,8 @@
 from flask import Blueprint, jsonify, request
-from flask_jwt_extended import create_access_token, get_jwt, jwt_required
+#from flask_jwt_extended import create_access_token, get_jwt, jwt_required
 from mongoengine.errors import DoesNotExist, NotUniqueError, ValidationError
 from errors import InternalServerError, SchemaValidationError, EmailAlreadyExistError
-from flask_mongoengine import DoesNotExist
+#from flask_mongoengine import DoesNotExist
 from db.models import User
 from constants import ACCESS_EXPIRES
 from app import jwt_redis_blocklist

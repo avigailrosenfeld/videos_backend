@@ -1,8 +1,8 @@
-from flask_mongoengine import MongoEngine
+from flask_sqlalchemy import SQLAlchemy
 
-db = MongoEngine()
+db = SQLAlchemy()
 
 
 def initialize_db(app):
-    app.logger.info("Initializing MongoDB")
+    app.logger.info("Initializing mySql")
     db.init_app(app)

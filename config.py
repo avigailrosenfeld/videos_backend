@@ -20,11 +20,7 @@ env_config = get_env_object()
 class BaseConfig(object):
     SECRET_KEY = env_config["SECRET_KEY"]
     DEBUG = True
-    MONGODB_DB = env_config["DB_NAME"]
-    MONGODB_HOST = env_config["DB_HOST"]
-    MONGODB_PORT = int(env_config["DB_PORT"])
-    MONGODB_USERNAME = env_config["DB_USER"]
-    MONGODB_PASSWORD = env_config["DB_PASS"]
+    SQLALCHEMY_DATABASE_URI = f"mysql+pymysql://{env_config['DB_USER']}:{env_config['DB_PASS']}@{env_config['DB_HOST']}/{env_config['DB_NAME']}"
 
 
 class RedisConfig(object):

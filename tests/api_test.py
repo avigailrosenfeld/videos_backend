@@ -1,4 +1,4 @@
-from pymongo import MongoClient
+#from pymongo import MongoClient
 from decouple import Config, RepositoryEnv
 from unittest import TestCase
 from os.path import join, dirname
@@ -21,10 +21,10 @@ class APITestCase(TestCase):
         if '127.0.0.1' not in env_config["DB_HOST"] or 'tests' not in env_config["DB_HOST"]:
             raise Exception("not local db")
 
-        mongo_client = MongoClient(env_config["DB_HOST"])
-        db = mongo_client.tests
-        for collection in db.list_collection_names():
-            db[collection].drop()
+        # mongo_client = MongoClient(env_config["DB_HOST"])
+        # db = mongo_client.tests
+        # for collection in db.list_collection_names():
+        #     db[collection].drop()
 
     def runTest(self) -> None:
         self._users_tests.run_tests()

@@ -4,7 +4,7 @@ from flask import current_app as app
 from pyparsing import null_debug_action
 from db.models import User
 from flask_restful import Resource
-from mongoengine.errors import DoesNotExist, NotUniqueError, ValidationError
+#from mongoengine.errors import DoesNotExist, NotUniqueError, ValidationError
 from errors import InternalServerError, SchemaValidationError, UserNotFoundError, EmailAlreadyExistError
 from rest.jwt import jwt_admin_required
 import bcrypt
