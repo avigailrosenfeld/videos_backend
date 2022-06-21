@@ -25,7 +25,9 @@ jobs:
       uses: getong/mariadb-action@v1.1
       
     - name: Create Mysql Databases
-      run: sudo ./setup_mysql.sh
+      run: |
+        chmod 777 ./setup_mysql.sh
+        sh ./setup_mysql.sh
 
     - name: Install Dependencies
       run: |
