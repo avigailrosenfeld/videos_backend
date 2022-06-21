@@ -11,14 +11,12 @@ class User(db.Model):
     role = db.Column(db.String(120), nullable=False,
                      default='admin')  # TODO: CHANGE IT!
 
-    # name = db.StringField(required=True)
-    # email = db.StringField(required=True, unique=True)
-    # password = db.StringField(required=True)
-    # role = db.StringField(required=True, default='admin')  # TODO: CHANGE IT!
+    @property
+    def is_admin(self):
+        return self.role == 'admin'
 
-    # @property
-    # def is_admin(self):
-    #     return self.role == 'admin'
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
     # def __repr__(self):
     #     return '<User %r>' % self.username
 
@@ -45,7 +43,3 @@ class User(db.Model):
 #     @property
 #     def is_admin(self):
 #         return self.role == 'admin'
-
-
-db.drop_all()
-db.create_all()

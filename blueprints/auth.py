@@ -1,12 +1,12 @@
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import create_access_token, get_jwt, jwt_required
-#from mongoengine.errors import DoesNotExist, NotUniqueError, ValidationError
-from errors import InternalServerError, SchemaValidationError, EmailAlreadyExistError
-#from flask_mongoengine import DoesNotExist
+from db.dal_mysql.dal_users import DalUsers
 from db.models import User
+from errors import InternalServerError, SchemaValidationError, EmailAlreadyExistError
 from constants import ACCESS_EXPIRES
-from app import jwt_redis_blocklist, db
+from app import jwt_redis_blocklist
 import bcrypt
+
 
 auth = Blueprint('auth', __name__)
 
@@ -22,8 +22,7 @@ def register():
             return jsonify(message="No Password"), 401
         body['password'] = bcrypt.hashpw(
             password.encode('utf-8'), bcrypt.gensalt())
-        db.session.add(User(**body))
-        db.session.commit()
+        DalUsers.create_user(User(**body))
         return {}, 201
     except Exception as e:
         # TODO
@@ -41,7 +40,7 @@ def login():
     email = request.json.get("email")
     password = request.json.get("password")
     try:
-        user = db.session.query(User).filter(User.email == email).first()
+        user = DalUsers.get_user_by_email(email=email)
         if not user:
             return jsonify(message="User not exist"), 401
         if not bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):

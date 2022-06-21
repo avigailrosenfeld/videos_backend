@@ -17,6 +17,7 @@ class UsersTests():
         self._create_user_after_logout()
         self._login()
         self._get_existing_user()
+        # TODO put
 
     def _register(self) -> None:
         user_data = {"name": "achia", "password": "1234",
