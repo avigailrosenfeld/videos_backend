@@ -18,7 +18,7 @@ class UsersTests():
         self._login()
         self._get_existing_user()
         self._update_user()
-        # TODO put
+        self._get_all_users()
 
     def _register(self) -> None:
         user_data = {"name": "achia", "password": "1234",
@@ -98,3 +98,13 @@ class UsersTests():
         response = requests.put(
             f'{self._api_url}/users/{self._user_id}', json=user_data)
         assert response.status_code == 401, 'update should fail'
+
+    def _get_all_users(self) -> None:
+        headers = {"Authorization": f'Bearer {self._access_token}'}
+        response = requests.get(
+            f'{self._api_url}/users', headers=headers)
+        assert response.status_code == 200, 'update failed'
+        assert response.json()[0].get('id') == 1, 'bad id'
+        assert response.json()[0].get('name') == 'achia', 'bad name'
+        assert response.json()[1].get('id') == 2, 'bad id'
+        assert response.json()[1].get('name') == 'baba ganoosh', 'bad name'

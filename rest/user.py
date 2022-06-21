@@ -17,7 +17,10 @@ class UsersApi(Resource):
 
     def get(self):
         users = DalUsers.get_all_users()
-        return Response(users, mimetype="application/json", status=200)
+        response = []
+        for user in users:
+            response.append(user.as_dict())
+        return Response(json.dumps(response), mimetype="application/json", status=200)
 
     def post(self):
         try:

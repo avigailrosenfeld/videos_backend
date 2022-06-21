@@ -16,7 +16,7 @@ class DalUsers:
 
     @staticmethod
     def get_all_users() -> User:
-        return db.session.query(User).get().all()
+        return db.session.query(User).filter().all()
 
     @staticmethod
     def create_user(user: User) -> int:
