@@ -26,6 +26,7 @@ jobs:
       
     - name: Create Mysql Databases
       run: |
+        service mysql start
         chmod 777 ./setup_mysql.sh
         sh ./setup_mysql.sh
 
