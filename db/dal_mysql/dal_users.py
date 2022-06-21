@@ -14,6 +14,7 @@ class DalUsers():
         db.session.commit()
         return user_id
 
+    @staticmethod
     def get_user_by_id(id: str) -> User:
         return db.session.query(User).filter(
             User.id == id).first()
