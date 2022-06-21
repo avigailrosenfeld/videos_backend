@@ -15,7 +15,6 @@ jobs:
         image: mysql:5.7
         ports:
         - 3306
-        options: --health-cmd "mysqladmin ping" --health-interval 10s --health-timeout 5s --health-retries 10
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python
@@ -29,6 +28,7 @@ jobs:
       
     - name: Create Mysql Databases
       run: |
+        sudo systemctl start mysql.service
         chmod 777 ./setup_mysql.sh
         sh ./setup_mysql.sh
 
