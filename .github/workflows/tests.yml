@@ -14,7 +14,7 @@ jobs:
       mysql:
         image: mysql:8.0
         ports:
-        - '4646:3306'
+        - '3306:3306'
         env:
           MYSQL_ROOT_PASSWORD: password
           MYSQL_DATABASE: videos_test
@@ -29,7 +29,7 @@ jobs:
 
     - name: Create Mysql Databases
       run:
-        mysql -h 127.0.0.1 --port 4646 -u root -ppassword -e "CREATE DATABASE IF NOT EXISTS videos_test; CREATE USER userapp@localhost identified by '1234';  GRANT ALL privileges ON *.* TO userapp@localhost;"
+        mysql -h 127.0.0.1 --port 3306 -u root -ppassword -e "CREATE DATABASE IF NOT EXISTS videos_test; CREATE USER userapp@127.0.0.1 identified by '1234';  GRANT ALL privileges ON *.* TO userapp@127.0.0.1;"
     
     - name: Start Redis
       uses: supercharge/redis-github-action@1.4.0
