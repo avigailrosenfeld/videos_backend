@@ -12,9 +12,12 @@ jobs:
     runs-on: ubuntu-latest
     services:
       mysql:
-        image: mysql:5.7
+        image: mysql:8.0
         ports:
-        - 3306
+        - '8888:3306'
+        env:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: videos_test
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python
@@ -29,8 +32,7 @@ jobs:
     - name: Create Mysql Databases
       run: |
         sudo systemctl start mysql.service
-        chmod 777 ./setup_mysql.sh
-        sh ./setup_mysql.sh
+        mysql -h 127.0.0.1 --port 8888 -u root -ppassword -e 'CREATE DATABASE videos_test; CREATE USER userapp@localhost identified by '1234';  GRANT ALL privileges ON *.* TO userapp@localhost;'
 
     - name: Install Dependencies
       run: |
