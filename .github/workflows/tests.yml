@@ -17,6 +17,7 @@ jobs:
         - '8888:3306'
         env:
           MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: videos_test
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
     - uses: actions/checkout@v2
@@ -28,7 +29,7 @@ jobs:
 
     - name: Create Mysql Databases
       run:
-        mysql -h 127.0.0.1 --port 8888 -u root -ppassword -e 'CREATE DATABASE videos_test; CREATE USER userapp@localhost identified by '1234';  GRANT ALL privileges ON *.* TO userapp@localhost;'
+        mysql -h 127.0.0.1 --port 8888 -u root -ppassword -e 'REATE USER userapp@localhost identified by '1234';  GRANT ALL privileges ON *.* TO userapp@localhost;'
     
     - name: Start Redis
       uses: supercharge/redis-github-action@1.4.0
