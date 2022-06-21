@@ -19,6 +19,7 @@ class UsersTests():
         self._get_existing_user()
         self._update_user()
         self._get_all_users()
+        self._delete_user_by_id()
 
     def _register(self) -> None:
         user_data = {"name": "achia", "password": "1234",
@@ -108,3 +109,16 @@ class UsersTests():
         assert response.json()[0].get('name') == 'achia', 'bad name'
         assert response.json()[1].get('id') == 2, 'bad id'
         assert response.json()[1].get('name') == 'baba ganoosh', 'bad name'
+
+    def _delete_user_by_id(self) -> None:
+        user_data = {"name": "baba ganoosh", "password": "2345",
+                     "email": "chaim@test.com"}
+        headers = {"Authorization": f'Bearer {self._access_token}'}
+        response = requests.delete(
+            f'{self._api_url}/users/{self._user_id}', json=user_data, headers=headers)
+        assert response.status_code == 200, 'delete failed'
+
+        user_data = {"name": "kishkush"}
+        response = requests.delete(
+            f'{self._api_url}/users/{self._user_id}', json=user_data)
+        assert response.status_code == 500, 'user not exist'

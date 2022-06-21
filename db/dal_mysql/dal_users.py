@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, Union
 from app import db
 from db.models import User
 
@@ -25,9 +25,15 @@ class DalUsers:
         return user.id
 
     @staticmethod
-    def update_user(body: Dict[str, any], id: int) -> int:
+    def update_user(body: any, id: str) -> int:  # type: ignore
         user = DalUsers.get_user_by_id(id=id)
         for key, value in body.items():
             setattr(user, key, value)
         db.session.commit()
         return user.id
+
+    @staticmethod
+    def delete_user_by_id(id: str) -> None:
+        user = DalUsers.get_user_by_id(id=id)
+        db.session.delete(user)
+        db.session.commit()

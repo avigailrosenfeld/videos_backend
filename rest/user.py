@@ -16,11 +16,14 @@ class UsersApi(Resource):
     decorators = [jwt_admin_required]
 
     def get(self):
-        users = DalUsers.get_all_users()
-        response = []
-        for user in users:
-            response.append(user.as_dict())
-        return Response(json.dumps(response), mimetype="application/json", status=200)
+        try:
+            users = DalUsers.get_all_users()
+            response = []
+            for user in users:
+                response.append(user.as_dict())
+            return Response(json.dumps(response), mimetype="application/json", status=200)
+        except Exception as e:
+            return Response(json.dumps({'message': 'Error UsersApi -> get()'}), mimetype="application/json", status=500)
 
     def post(self):
         try:
@@ -29,13 +32,13 @@ class UsersApi(Resource):
                 raise SchemaValidationError
             password = body.get('password')
             if not password:
-                return jsonify(message="No Password"), 401
+                return Response(json.dumps({'message': 'No Password'}), mimetype="application/json", status=401)
             body['password'] = bcrypt.hashpw(
                 password.encode('utf-8'), bcrypt.gensalt())
             user_id = DalUsers.create_user(User(**body))
             return Response(json.dumps({"id": user_id}), status=201, mimetype="application/json")
         except Exception as e:
-            return Response(json.dumps({'message': 'Error UsersApi -> post() '}), mimetype="application/json", status=500)
+            return Response(json.dumps({'message': 'Error UsersApi -> post()'}), mimetype="application/json", status=500)
 
 
 class UserApi(Resource):
@@ -45,9 +48,9 @@ class UserApi(Resource):
         body = request.get_json()
         try:
             user_id = DalUsers.update_user(body, id)
+            return Response(json.dumps({"id": user_id}), status=200, mimetype="application/json")
         except Exception as e:
             return Response(json.dumps({"message": e}), status=400, mimetype="application/json")
-        return Response(json.dumps({"id": user_id}), status=200, mimetype="application/json")
 
     def get(self, id):
         try:
@@ -56,10 +59,11 @@ class UserApi(Resource):
                 return Response(json.dumps({'message': 'User not found in database'}), mimetype="application/json", status=400)
             return Response(json.dumps(user.as_dict()), mimetype="application/json", status=200)
         except Exception as e:
-            return Response(json.dumps({'message': 'Error UserApi -> get() '}), mimetype="application/json", status=500)
+            return Response(json.dumps({'message': 'Error UserApi -> get()'}), mimetype="application/json", status=500)
 
     def delete(self, id):
-        user = User.query.get(id)
-        db.session.delete(user)
-        db.session.commit()
-        return "", 200
+        try:
+            DalUsers.delete_user_by_id(id)
+            return Response(json.dumps(""), mimetype="application/json", status=200)
+        except Exception as e:
+            return Response(json.dumps({'message': 'Error UserApi -> delete()'}), mimetype="application/json", status=500)
