@@ -1,4 +1,6 @@
 from app import db
+from db.models import User
+
 # from flask_restful import Resource
 
 
