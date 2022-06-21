@@ -29,6 +29,7 @@ jobs:
       
     - name: Create Mysql Databases
       run: |
+        sudo systemctl start mysql.service
         chmod 777 ./setup_mysql.sh
         sh ./setup_mysql.sh
 
