@@ -1,3 +1,4 @@
+from email import message
 import json
 from flask import request, jsonify
 from flask.wrappers import Response
@@ -56,7 +57,7 @@ class UserApi(Resource):
         try:
             user = DalUsers.get_user_by_id(id)
             if not user:
-                return jsonify(message="DoesNotExist"), 401
+                return Response(json.dumps({'message': 'User not found in database'}), mimetype="application/json", status=400)
             return Response(json.dumps(user.as_dict()), mimetype="application/json", status=200)
         except Exception as e:
             if False:
