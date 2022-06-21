@@ -19,13 +19,6 @@ class APITestCase(TestCase):
 
         if 'test' not in env_config["DB_NAME"]:
             raise Exception("not local db")
-        # if 'test' in app.config.get('SQLALCHEMY_DATABASE_URI'):
-        #   with app.app_context():
-        #      db.engine.execute("DROP TABLE users;")
-        # mmongo_client = MongoClient(env_config["DB_HOST"])
-        # db = mongo_client.tests
-        # for collection in db.list_collection_names():
-        #     db[collection].drop()
 
     def runTest(self) -> None:
         self._users_tests.run_tests()

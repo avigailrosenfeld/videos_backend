@@ -16,24 +16,8 @@ class User(db.Model):  # type: ignore
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
-    # def __repr__(self):
-    #     return '<User %r>' % self.username
 
-
-# class Index(Resource):
-#     def get(self):
-#         ret = []
-#         res = User.query.all()
-#         for user in res:
-#             ret.append(
-#                 {
-#                     'username': user.username,
-#                     'email': user.email
-#                 }
-#             )
-#         return ret, 200
-
-# class video(db.Document):
+# class video(db.Document): TODO
 #     name = db.StringField(required=True)
 #     email = db.StringField(required=True, unique=True)
 #     password = db.StringField(required=True)

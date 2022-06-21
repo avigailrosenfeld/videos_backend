@@ -6,6 +6,8 @@ from errors import InternalServerError, SchemaValidationError, EmailAlreadyExist
 from constants import ACCESS_EXPIRES
 from app import jwt_redis_blocklist
 import bcrypt
+from flask.wrappers import Response
+import json
 
 
 auth = Blueprint('auth', __name__)
@@ -25,12 +27,7 @@ def register():
         DalUsers.create_user(User(**body))
         return {}, 201
     except Exception as e:
-        # TODO
-        if False:
-            raise EmailAlreadyExistError
-        if False:
-            raise SchemaValidationError
-        raise InternalServerError
+        return Response(json.dumps({'message': 'Register faild'}), mimetype="application/json", status=500)
 
 
 @auth.route('/login', methods=['POST'])
@@ -50,16 +47,16 @@ def login():
                            access_token=access_token)
         return response, 201
     except Exception as e:
-        # TODO
-        if False:
-            return jsonify(message="Bad Email or Password"), 401
-        return jsonify(message="WTF"), 401
+        return Response(json.dumps({'message': 'Register faild'}), mimetype="application/json", status=500)
 
 
 @auth.route('/logout', methods=['POST'])
 @jwt_required()
 def logout():
-    jti = get_jwt()["jti"]
-    jwt_redis_blocklist.set(jti, "", ex=ACCESS_EXPIRES)
-    response = jsonify({"msg": "logout successful"})
-    return response, 200
+    try:
+        jti = get_jwt()["jti"]
+        jwt_redis_blocklist.set(jti, "", ex=ACCESS_EXPIRES)
+        response = jsonify({"msg": "logout successful"})
+        return response, 200
+    except Exception as e:
+        return Response(json.dumps({'message': 'Register faild'}), mimetype="application/json", status=500)

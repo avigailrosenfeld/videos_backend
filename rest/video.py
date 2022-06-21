@@ -1,3 +1,4 @@
+import json
 from flask import request, jsonify
 from flask.wrappers import Response
 from flask import current_app as app
@@ -28,5 +29,4 @@ class VideosApi(Resource):
             # return {"id": str(id)}, 201
             return
         except Exception as e:
-            app.logger.error(e)
-            raise InternalServerError
+            return Response(json.dumps({'message': 'Error VideosApi -> post '}), mimetype="application/json", status=500)

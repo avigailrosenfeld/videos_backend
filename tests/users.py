@@ -17,6 +17,7 @@ class UsersTests():
         self._create_user_after_logout()
         self._login()
         self._get_existing_user()
+        self._update_user()
         # TODO put
 
     def _register(self) -> None:
@@ -82,3 +83,18 @@ class UsersTests():
             f'{self._api_url}/users', json=user_data, headers=headers)
         assert response.status_code == 401, 'create user after logout'
         assert response.json().get('msg') == 'Token has been revoked', 'token should be revoked'
+
+    def _update_user(self) -> None:
+        user_data = {"name": "baba ganoosh", "password": "2345",
+                     "email": "chaim@test.com"}
+        headers = {"Authorization": f'Bearer {self._access_token}'}
+        response = requests.put(
+            f'{self._api_url}/users/{self._user_id}', json=user_data, headers=headers)
+        assert response.status_code == 200, 'update failed'
+        assert response.json().get('id') == 2, 'bad id'
+
+        user_data = {"name": "baba ganoosh", "kishkush": "2345",
+                     "email": "chaim@test.com"}
+        response = requests.put(
+            f'{self._api_url}/users/{self._user_id}', json=user_data)
+        assert response.status_code == 401, 'update should fail'
