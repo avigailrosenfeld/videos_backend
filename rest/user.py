@@ -3,17 +3,17 @@ from flask.wrappers import Response
 from flask import current_app as app
 from db.models import User
 from flask_restful import Resource
-from mongoengine.errors import DoesNotExist, NotUniqueError, ValidationError
 from errors import InternalServerError, SchemaValidationError, UserNotFoundError, EmailAlreadyExistError
 from rest.jwt import jwt_admin_required
 import bcrypt
+from app import db
 
 
 class UsersApi(Resource):
     decorators = [jwt_admin_required]
 
     def get(self):
-        users = User.objects().to_json()
+        users = User.query().all().to_json()
         return Response(users, mimetype="application/json", status=200)
 
     def post(self):
@@ -26,14 +26,14 @@ class UsersApi(Resource):
                 return jsonify(message="No Password"), 401
             body['password'] = bcrypt.hashpw(
                 password.encode('utf-8'), bcrypt.gensalt())
-            user = User(**body).save()
-            id = user.id
-            return {"id": str(id)}, 201
-        except NotUniqueError:
-            raise EmailAlreadyExistError
-        except ValidationError:
-            raise SchemaValidationError
+            userid = db.session.add(User(**body))
+            db.session.commit()
+            return {"id": str(userid)}, 201
         except Exception as e:
+            if False:
+                return jsonify(message="EmailAlreadyExistError"), 401
+            if False:
+                return jsonify(message="SchemaValidationError"), 401
             app.logger.error(e)
             raise InternalServerError
 
@@ -43,19 +43,24 @@ class UserApi(Resource):
 
     def put(self, id):
         body = request.get_json()
-        User.objects.get(id=id).update(**body)
+        user = User.query.get(id=id)
+        user = User(**body)
+        db.session.commit()
         return "", 200
 
     def get(self, id):
         try:
-            users = User.objects.get(id=id)
+            users = User.query.get(id=id)
             users = users.to_json()
             return Response(users, mimetype="application/json", status=200)
-        except DoesNotExist:
-            raise UserNotFoundError
-        except ValidationError:
-            raise SchemaValidationError
+        except Exception as e:
+            if False:
+                return jsonify(message="DoesNotExist"), 401
+            if False:
+                return jsonify(message="ValidationError"), 401
 
     def delete(self, id):
-        user = User.objects.get(id=id).delete()
+        user = User.query.get(id)
+        db.session.delete(user)
+        db.session.commit()
         return "", 200
