@@ -32,7 +32,7 @@ jobs:
     - name: Create Mysql Databases
       run: |
         sudo systemctl start mysql.service
-        mysql -h 127.0.0.1 --port 8888 -u root -ppassword -e 'CREATE DATABASE videos_test; CREATE USER userapp@localhost identified by '1234';  GRANT ALL privileges ON *.* TO userapp@localhost;'
+        mysql -h 127.0.0.1 --port 8888 -u root -ppassword -e 'CREATE DATABASE IF NOT EXIST videos_test; CREATE USER userapp@localhost identified by '1234';  GRANT ALL privileges ON *.* TO userapp@localhost;'
 
     - name: Install Dependencies
       run: |
