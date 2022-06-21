@@ -43,7 +43,8 @@ def login():
         if not bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
             return Response(json.dumps({'message': 'Bad Email or Password'}), mimetype="application/json", status=401)
         access_token = create_access_token(identity=email)
-        return Response(json.dumps({'message': 'Login Successful'}, access_token=access_token), mimetype="application/json", status=201)
+        return Response(json.dumps({'message': "login successful",
+                                   'access_token': access_token}), mimetype="application/json", status=201)
     except Exception as e:
         return Response(json.dumps({'message': 'Login failed'}), mimetype="application/json", status=500)
 

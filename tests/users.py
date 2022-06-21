@@ -53,12 +53,12 @@ class UsersTests():
         headers = {"Authorization": f'Bearer {self._access_token}'}
         response = requests.get(
             f'{self._api_url}/users/61e4107dab0894a2861fed80', headers=headers)
-        assert response.status_code == 400, 'get not existing user return not 400'
+        assert response.status_code == 404, 'get not existing user return not 400'
         assert response.json().get(
-            'message') == 'User not found in database', 'get not existing user wrong message'
+            'message') == 'Not Exist', 'get not existing user wrong message'
         response = requests.get(
             f'{self._api_url}/users/123456', headers=headers)
-        assert response.status_code == 400, 'get invalid id not return 400'
+        assert response.status_code == 404, 'get invalid id not return 400'
 
     def _login(self) -> None:
         user_data = {"password": "1234", "email": "achia@test.com"}
@@ -111,14 +111,11 @@ class UsersTests():
         assert response.json()[1].get('name') == 'baba ganoosh', 'bad name'
 
     def _delete_user_by_id(self) -> None:
-        user_data = {"name": "baba ganoosh", "password": "2345",
-                     "email": "chaim@test.com"}
         headers = {"Authorization": f'Bearer {self._access_token}'}
         response = requests.delete(
-            f'{self._api_url}/users/{self._user_id}', json=user_data, headers=headers)
+            f'{self._api_url}/users/{self._user_id}', headers=headers)
         assert response.status_code == 200, 'delete failed'
 
-        user_data = {"name": "kishkush"}
-        response = requests.delete(
-            f'{self._api_url}/users/{self._user_id}', json=user_data)
-        assert response.status_code == 500, 'user not exist'
+        response = requests.get(
+            f'{self._api_url}/users/{self._user_id}', headers=headers)
+        assert response.status_code == 404, 'user not exist'
