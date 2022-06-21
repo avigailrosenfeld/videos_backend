@@ -21,7 +21,7 @@ jobs:
       with:
         redis-version: '6.2.6'
         
-      name: Start mariadb
+    - name: Start mariadb
       uses: getong/mariadb-action@v1.1
       
     - name: Create Mysql Databases
