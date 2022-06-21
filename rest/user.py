@@ -9,7 +9,6 @@ from errors import InternalServerError, SchemaValidationError, UserNotFoundError
 from rest.jwt import jwt_admin_required
 from db.dal_mysql.dal_users import DalUsers
 import bcrypt
-from app import db
 
 
 class UsersApi(Resource):
