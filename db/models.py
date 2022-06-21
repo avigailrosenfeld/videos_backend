@@ -1,10 +1,7 @@
 from app import db
-from db.models import User
-
-# from flask_restful import Resource
 
 
-class User(db.Model):
+class User(db.Model):  # type: ignore
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
