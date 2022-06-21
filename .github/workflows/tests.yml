@@ -43,6 +43,6 @@ jobs:
     
     - name: Run API Tests
       run: |
-        python app.py test.env &
+        python app.py github.env &
         sleep 5
         python tests/run_tests.py
