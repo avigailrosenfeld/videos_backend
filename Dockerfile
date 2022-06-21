@@ -26,13 +26,12 @@ RUN apt-get install -y redis-server
 RUN apt-get install -y ffmpeg
 
 COPY setup.sh .
-COPY setup_local_db.js .
+COPY setup_mysql.sh .
 RUN apt-get -y update
-RUN apt install -y mongodb
-RUN mkdir -p /run/mongodb/
-RUN chown -R mongodb:mongodb /run/mongodb
-RUN chmod -R 777 /run/mongodb
+RUN apt-get install -y mariadb-server
 RUN chmod 777 ./setup.sh
-RUN chmod 777 ./setup_local_db.js
-EXPOSE 27017
+EXPOSE 3306
 EXPOSE 6379
+RUN git config --global --add safe.directory /workspaces/videos_backend
+RUN git config --global user.email "you@example.com"
+RUN git config --global user.name "Your Name"

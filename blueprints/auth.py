@@ -1,12 +1,14 @@
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import create_access_token, get_jwt, jwt_required
-from mongoengine.errors import DoesNotExist, NotUniqueError, ValidationError
-from errors import InternalServerError, SchemaValidationError, EmailAlreadyExistError
-from flask_mongoengine import DoesNotExist
+from db.dal_mysql.dal_users import DalUsers
 from db.models import User
+from errors import InternalServerError, SchemaValidationError, EmailAlreadyExistError, UserNotFoundError
 from constants import ACCESS_EXPIRES
 from app import jwt_redis_blocklist
 import bcrypt
+from flask.wrappers import Response
+import json
+
 
 auth = Blueprint('auth', __name__)
 
@@ -19,43 +21,40 @@ def register():
             raise SchemaValidationError
         password = body.get('password')
         if not password:
-            return jsonify(message="No Password"), 401
+            return Response(json.dumps({'message': 'No Password'}), mimetype="application/json", status=401)
         body['password'] = bcrypt.hashpw(
             password.encode('utf-8'), bcrypt.gensalt())
-        user = User(**body).save()
-        return {}, 201
-    except NotUniqueError:
-        raise EmailAlreadyExistError
-    except ValidationError:
-        raise SchemaValidationError
+        DalUsers.create_user(User(**body))
+        return Response(json.dumps({'message': 'Success'}), mimetype="application/json", status=201)
     except Exception as e:
-        raise InternalServerError
+        return Response(json.dumps({'message': 'Register Failed'}), mimetype="application/json", status=500)
 
 
 @auth.route('/login', methods=['POST'])
 def login():
     if not request.json:
-        return jsonify(message="No Data"), 401
+        raise SchemaValidationError
     email = request.json.get("email")
     password = request.json.get("password")
     try:
-        user = User.objects.get(email=email)
+        user = DalUsers.get_user_by_email(email=email)
+        if not user:
+            raise UserNotFoundError
         if not bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
-            return jsonify(message="Bad Email or Password"), 401
+            return Response(json.dumps({'message': 'Bad Email or Password'}), mimetype="application/json", status=401)
         access_token = create_access_token(identity=email)
-        response = jsonify(message="login successful",
-                           access_token=access_token)
-        return response, 201
-    except DoesNotExist:
-        return jsonify(message="Bad Email or Password"), 401
+        return Response(json.dumps({'message': "login successful",
+                                   'access_token': access_token}), mimetype="application/json", status=201)
     except Exception as e:
-        return jsonify(message="WTF"), 401
+        return Response(json.dumps({'message': 'Login failed'}), mimetype="application/json", status=500)
 
 
 @auth.route('/logout', methods=['POST'])
 @jwt_required()
 def logout():
-    jti = get_jwt()["jti"]
-    jwt_redis_blocklist.set(jti, "", ex=ACCESS_EXPIRES)
-    response = jsonify({"msg": "logout successful"})
-    return response, 200
+    try:
+        jti = get_jwt()["jti"]
+        jwt_redis_blocklist.set(jti, "", ex=ACCESS_EXPIRES)
+        return Response(json.dumps({'message': 'Logout Successful'}), mimetype="application/json", status=200)
+    except Exception as e:
+        return Response(json.dumps({'message': 'Logout failed'}), mimetype="application/json", status=500)

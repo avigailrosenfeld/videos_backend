@@ -17,6 +17,9 @@ class UsersTests():
         self._create_user_after_logout()
         self._login()
         self._get_existing_user()
+        self._update_user()
+        self._get_all_users()
+        self._delete_user_by_id()
 
     def _register(self) -> None:
         user_data = {"name": "achia", "password": "1234",
@@ -50,12 +53,12 @@ class UsersTests():
         headers = {"Authorization": f'Bearer {self._access_token}'}
         response = requests.get(
             f'{self._api_url}/users/61e4107dab0894a2861fed80', headers=headers)
-        assert response.status_code == 400, 'get not existing user return not 400'
+        assert response.status_code == 404, 'get not existing user return not 400'
         assert response.json().get(
-            'message') == 'User not found in database', 'get not existing user wrong message'
+            'message') == 'Not Exist', 'get not existing user wrong message'
         response = requests.get(
             f'{self._api_url}/users/123456', headers=headers)
-        assert response.status_code == 400, 'get invalid id not return 400'
+        assert response.status_code == 404, 'get invalid id not return 400'
 
     def _login(self) -> None:
         user_data = {"password": "1234", "email": "achia@test.com"}
@@ -81,3 +84,38 @@ class UsersTests():
             f'{self._api_url}/users', json=user_data, headers=headers)
         assert response.status_code == 401, 'create user after logout'
         assert response.json().get('msg') == 'Token has been revoked', 'token should be revoked'
+
+    def _update_user(self) -> None:
+        user_data = {"name": "baba ganoosh", "password": "2345",
+                     "email": "chaim@test.com"}
+        headers = {"Authorization": f'Bearer {self._access_token}'}
+        response = requests.put(
+            f'{self._api_url}/users/{self._user_id}', json=user_data, headers=headers)
+        assert response.status_code == 200, 'update failed'
+        assert response.json().get('id') == 2, 'bad id'
+
+        user_data = {"name": "baba ganoosh", "kishkush": "2345",
+                     "email": "chaim@test.com"}
+        response = requests.put(
+            f'{self._api_url}/users/{self._user_id}', json=user_data)
+        assert response.status_code == 401, 'update should fail'
+
+    def _get_all_users(self) -> None:
+        headers = {"Authorization": f'Bearer {self._access_token}'}
+        response = requests.get(
+            f'{self._api_url}/users', headers=headers)
+        assert response.status_code == 200, 'update failed'
+        assert response.json()[0].get('id') == 1, 'bad id'
+        assert response.json()[0].get('name') == 'achia', 'bad name'
+        assert response.json()[1].get('id') == 2, 'bad id'
+        assert response.json()[1].get('name') == 'baba ganoosh', 'bad name'
+
+    def _delete_user_by_id(self) -> None:
+        headers = {"Authorization": f'Bearer {self._access_token}'}
+        response = requests.delete(
+            f'{self._api_url}/users/{self._user_id}', headers=headers)
+        assert response.status_code == 200, 'delete failed'
+
+        response = requests.get(
+            f'{self._api_url}/users/{self._user_id}', headers=headers)
+        assert response.status_code == 404, 'user not exist'

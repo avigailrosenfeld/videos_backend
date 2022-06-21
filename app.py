@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
 from config import BaseConfig, RedisConfig
 from flask_cors import CORS
 from constants import ACCESS_EXPIRES
@@ -11,7 +12,9 @@ app.config["JWT_ACCESS_TOKEN_EXPIRES"] = ACCESS_EXPIRES
 app.config['JWT_BLACKLIST_ENABLED'] = True
 app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access', 'refresh']
 app.config.from_object(BaseConfig)
+
 CORS(app)
+db = SQLAlchemy(app)
 jwt = JWTManager(app)
 
 redis_config = RedisConfig()
@@ -37,4 +40,8 @@ def init():
 
 if __name__ == "__main__":
     init()
+    from db.models import User
+    db.metadata.create_all(db.engine, tables=[
+        User.__table__
+    ])
     app.run(host="0.0.0.0", port=8000, debug=True)
