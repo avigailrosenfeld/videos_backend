@@ -25,7 +25,7 @@ class DalUsers:
         return user.id
 
     @staticmethod
-    def update_user(body: any, id: str) -> int:  # type: ignore
+    def update_user(body: Dict, id: str) -> int:  # type: ignore
         user = DalUsers.get_user_by_id(id=id)
         for key, value in body.items():
             setattr(user, key, value)

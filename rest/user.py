@@ -46,7 +46,7 @@ class UserApi(Resource):
     def put(self, id):
         body = request.get_json()
         try:
-            user_id = DalUsers.update_user(body, id)
+            user_id = DalUsers.update_user(body, id)  # type: ignore
             return Response(json.dumps({"id": user_id}), status=200, mimetype="application/json")
         except Exception as e:
             return Response(json.dumps({"message": e}), status=400, mimetype="application/json")
