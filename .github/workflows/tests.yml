@@ -17,9 +17,10 @@ jobs:
         - 3306
         env:
           MYSQL_ROOT_PASSWORD: password
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
     - name: Create Mysql Databases
-      run: |
+      run:
         mysql -h 127.0.0.1 --port 3306 -u root -ppassword -e 'CREATE DATABASE videos_test; CREATE USER userapp@localhost identified by '1234';  GRANT ALL privileges ON *.* TO userapp@localhost;'
 
     - uses: actions/checkout@v2
