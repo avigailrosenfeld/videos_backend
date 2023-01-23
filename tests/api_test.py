@@ -6,7 +6,6 @@ from users import UsersTests
 
 API_URL: str = "http://localhost:8000"
 
-
 class APITestCase(TestCase):
     def setUp(self):
         APITestCase._prepare_db()
