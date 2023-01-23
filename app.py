@@ -12,6 +12,7 @@ app.config['JWT_BLACKLIST_ENABLED'] = True
 app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access', 'refresh']
 app.config.from_object(BaseConfig)
 CORS(app)
+
 jwt = JWTManager(app)
 
 redis_config = RedisConfig()
